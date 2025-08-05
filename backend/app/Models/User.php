@@ -21,6 +21,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'imageUrl',
+        'role',
+        'is_active',
+        
+        
     ];
 
     /**
@@ -43,6 +49,23 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
+    }
+
+    public function serviceRequests()
+    {
+        return $this->hasMany(ServiceRequest::class, 'driver_id');
+    }
+
+    public function MechanicInfo()
+    {
+        return $this->hasOne(MechanicInfo::class, 'mechanic_id');
+    }
+
+
+    public function Ratings()
+    {
+        return $this->hasMany(Rating::class, 'driver_id');
     }
 }
