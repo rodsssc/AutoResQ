@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Rating;
 use App\Models\ServiceRequest;
 use App\Models\MechanicInfo;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class RatingSeeder extends Seeder
@@ -13,24 +14,22 @@ class RatingSeeder extends Seeder
     {
         $completedRequests = ServiceRequest::where('status', 'completed')->get();
         
-        $comments = [
-            'Excellent service! Very professional and quick.',
-            'Good work, arrived on time and fixed the issue.',
-            'Satisfactory service, could be faster.',
-            'Outstanding mechanic, highly recommended!',
-            'Average service, nothing special.',
-            'Great communication and expertise.',
-            'Quick response and fair pricing.',
-            'Professional and knowledgeable.',
-            'Could improve on punctuality.',
-            'Excellent problem-solving skills.',
+        $localComments = [
+            'Maayo kaayo mo trabaho, salamat!',
+            'Dali ra naayo, recommend nako!',
+            'Maabtik ug tarong mo trabaho',
+            'Sakto ra ang bayad, maayo pud service',
+            'Naa pay gamay nga problema pero naayo ra dayon',
+            'Maayo ug tarong nga mekaniko',
+            'Dali ra nakabalo sa problema',
+            'Barato ug maayo ang service',
+            'Sulit ang bayad, maayo gyud',
+            'Balik-balikon nako ni nga mekaniko'
         ];
 
         foreach ($completedRequests as $request) {
-            $stars = rand(1, 5);
-            $comment = $stars >= 4 
-                ? $comments[array_rand(array_slice($comments, 0, 6))] 
-                : $comments[array_rand(array_slice($comments, 6))];
+            $stars = rand(3, 5); // Most ratings are positive in our scenario
+            $comment = $localComments[array_rand($localComments)];
 
             Rating::create([
                 'user_id' => $request->user_id,
@@ -41,21 +40,20 @@ class RatingSeeder extends Seeder
             ]);
         }
 
-        // Update mechanic average ratings
+        // Update all mechanic ratings
         $this->updateMechanicRatings();
     }
 
     private function updateMechanicRatings()
     {
-        $mechanicInfos = MechanicInfo::all();
+        $mechanics = User::where('role', 'mechanic')->get();
         
-        foreach ($mechanicInfos as $mechanicInfo) {
-            $ratings = Rating::where('mechanic_id', $mechanicInfo->mechanic_id)->get();
-            
-            if ($ratings->count() > 0) {
-                $averageRating = round($ratings->avg('stars'), 2);
-                $mechanicInfo->update(['rating_average' => $averageRating]);
-            }
+        foreach ($mechanics as $mechanic) {
+            $avgRating = Rating::where('mechanic_id', $mechanic->id)
+                ->avg('stars');
+                
+            MechanicInfo::where('mechanic_id', $mechanic->id)
+                ->update(['rating_average' => round($avgRating ?? 4.0, 2)]);
         }
     }
 }

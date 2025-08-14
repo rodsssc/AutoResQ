@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             'phone' => '09171234567',
             'role' => 'admin',
             'is_active' => true,
-           
+            'location_id' => null,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             'phone' => '09170000000',
             'role' => 'user',
             'is_active' => true,
-            
+            'location_id' => null,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
             'phone' => '09171112222',
             'role' => 'mechanic',
             'is_active' => true,
-            
+            'location_id' => null,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
             'specialization' => 'Car & Motorcycle',
             'rating_average' => 4.75,
             'status' => 'Available',
-           
+            'location_id' => $locationId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -83,7 +83,7 @@ class DatabaseSeeder extends Seeder
             'user_id' => $userId,
             'mechanic_id' => $mechanicId,
             'vehicle_issue_id' => $vehicleIssueId,
-            
+            'location_id' => $locationId,
             'description' => 'Car won’t start, making strange noise.',
             'issue_images' => json_encode(['engine.jpg']),
             'status' => 'pending',

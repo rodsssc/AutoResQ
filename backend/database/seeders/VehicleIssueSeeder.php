@@ -10,20 +10,19 @@ class VehicleIssueSeeder extends Seeder
     public function run(): void
     {
         $issues = [
-            ['title' => 'Engine Won\'t Start', 'description' => 'Vehicle engine fails to start or turn over'],
-            ['title' => 'Flat Tire', 'description' => 'Tire puncture or complete deflation requiring replacement'],
-            ['title' => 'Dead Battery', 'description' => 'Battery has no charge and needs jump start or replacement'],
-            ['title' => 'Overheating Engine', 'description' => 'Engine temperature exceeds normal operating range'],
-            ['title' => 'Brake Problems', 'description' => 'Issues with brake system including squeaking or reduced stopping power'],
-            ['title' => 'Transmission Issues', 'description' => 'Problems with gear shifting or transmission performance'],
-            ['title' => 'Electrical Problems', 'description' => 'Issues with lights, radio, or other electrical components'],
-            ['title' => 'Fuel System Issues', 'description' => 'Problems with fuel delivery or fuel pump'],
-            ['title' => 'Cooling System Leak', 'description' => 'Coolant leak or cooling system malfunction'],
-            ['title' => 'Suspension Problems', 'description' => 'Issues with vehicle suspension affecting ride quality'],
+            ['name' => 'Flat Tire', 'vehicle_type_id' => 1],
+            ['name' => 'Dead Battery', 'vehicle_type_id' => 2],
+            ['name' => 'Engine Overheating', 'vehicle_type_id' => 3],
+            ['name' => 'Transmission Failure', 'vehicle_type_id' => 4],
+            ['name' => 'Brake Failure', 'vehicle_type_id' => 5],
+            ['name' => 'Electrical Issues', 'vehicle_type_id' => 6],
+            ['name' => 'Fuel Leak', 'vehicle_type_id' => 7],
+            ['name' => 'Suspension Problems', 'vehicle_type_id' => 8],
+            ['name' => 'Steering Issues', 'vehicle_type_id' => 9],
+            ['name' => 'Exhaust Problems', 'vehicle_type_id' => 10],
+            ['name' => 'Air Conditioning Failure', 'vehicle_type_id' => 11],
         ];
 
-        foreach ($issues as $issue) {
-            VehicleIssue::create($issue);
-        }
+        VehicleIssue::insert($issues);
     }
 }

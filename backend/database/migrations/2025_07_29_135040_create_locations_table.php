@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
+           
+            $table->foreignId('mechanic_id')->nullable()->constrained('mechanic_infos')->onDelete('cascade');
+            $table->foreignId('service_request_id')->nullable()->constrained('service_requests')->onDelete('cascade');
+           
             $table->decimal('latitude', 10, 8);
             $table->decimal('longitude', 11, 8);
             $table->string('address')->nullable();
@@ -27,4 +31,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('locations');
     }
+    
 };

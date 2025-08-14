@@ -10,14 +10,13 @@ class MechanicInfo extends Model
     /** @use HasFactory<\Database\Factories\MechanicInfoFactory> */
     use HasFactory;
 
-    protected $fillable = [
+   protected $fillable = [
         'mechanic_id',
-        'license_number',
+        'specialization', // e.g., motorcycle, car, both
         'rating_average',
-        'status',
+        'status', // e.g., Available, Busy, Offline
         
     ];
-
     public function ServiceRequests()
     {
         return $this->hasMany(ServiceRequest::class, 'mechanic_id');
@@ -26,6 +25,11 @@ class MechanicInfo extends Model
     public function User()
     {
         return $this->belongsTo(User::class, 'mechanic_id');
+    }
+
+    public function Location()
+    {
+        return $this->hasOne(Location::class, 'location_id');
     }
 
 }

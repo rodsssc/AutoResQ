@@ -10,15 +10,23 @@ class Location extends Model
     /** @use HasFactory<\Database\Factories\LocationFactory> */
     use HasFactory;
 
-    protected $fillbale = [
+    protected $fillable = [
+        'mechanic_id',
+        'service_request_id',
         'latitude',
         'longitude',
         'address',
+
     ];
 
-    public function ServiceRequests()
+    public function serviceRequest()
     {
-        return $this->hasMany(ServiceRequest::class, 'location_id');
+        return $this->belongsTo(ServiceRequest::class, 'service_request_id');
+    }
+
+    public function mechanic()
+    {
+        return $this->belongsTo(MechanicInfo::class, 'mechanic_id');
     }
     
 }

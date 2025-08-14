@@ -6,47 +6,61 @@ use App\Models\ServiceRequest;
 use App\Models\User;
 use App\Models\Location;
 use App\Models\VehicleIssue;
-use App\Models\MechanicInfo;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class ServiceRequestSeeder extends Seeder
 {
     public function run(): void
     {
-        $drivers = User::where('role', 'user')->get();
-        $mechanics = MechanicInfo::all();
+        $users     = User::where('role', 'user')->get();
+        $mechanics = User::where('role', 'mechanic')->get();
+        $issues    = VehicleIssue::all();
         $locations = Location::all();
-        $vehicleIssues = VehicleIssue::all();
-        $statuses = ['pending', 'accepted', 'in_progress', 'completed', 'cancelled'];
 
-        for ($i = 0; $i < 30; $i++) {
-            $driver = $drivers->random();
+        // Status distribution weights
+        $statusWeights = [
+            'pending'     => 20,
+            'accepted'    => 30,
+            'in_progress' => 25,
+            'completed'   => 20,
+            'cancelled'   => 5
+        ];
+
+        for ($i = 0; $i < 50; $i++) {
+            $user     = $users->random();
             $mechanic = $mechanics->random();
+            $issue    = $issues->random();
             $location = $locations->random();
-            $vehicleIssue = $vehicleIssues->random();
-            $status = $statuses[array_rand($statuses)];
 
-            $requestAt = now()->subDays(rand(1, 30));
-            $acceptAt = null;
-            $completedAt = null;
-
-            if (in_array($status, ['accepted', 'in_progress', 'completed'])) {
-                $acceptAt = $requestAt->copy()->addMinutes(rand(5, 60));
-            }
-
-            if ($status === 'completed') {
-                $completedAt = $acceptAt->copy()->addMinutes(rand(30, 180));
-            }
+            $status    = $this->getWeightedRandomStatus($statusWeights);
+            $createdAt = Carbon::now()->subDays(rand(1, 60));
 
             ServiceRequest::create([
-                'user_id' => $driver->id,
-                'mechanic_id' => $mechanic->mechanic_id,
-                'location_id' => $location->id,
-                'vehicle_issue_id' => $vehicleIssue->id,
-                
-                'status' => $status,
-                
+                'user_id'          => $user->id,
+                'mechanic_id'      => $status !== 'pending' ? $mechanic->id : null,
+                'vehicle_issue_id' => $issue->id,
+                'location_id'      => $location->id,
+                'status'           => $status,
+                'created_at'       => $createdAt,
+                'updated_at'       => $createdAt->copy()->addHours(rand(1, 24))
             ]);
         }
+    }
+
+    private function getWeightedRandomStatus(array $weights): string
+    {
+        $total   = array_sum($weights);
+        $random  = rand(1, $total);
+        $current = 0;
+
+        foreach ($weights as $status => $weight) {
+            $current += $weight;
+            if ($random <= $current) {
+                return $status;
+            }
+        }
+
+        return 'pending';
     }
 }

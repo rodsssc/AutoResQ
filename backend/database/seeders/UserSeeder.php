@@ -5,65 +5,66 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create test user
+        // Admin account
         User::create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => Hash::make('password'),
-            'phone' => '09123456789',
-            'role' => 'user',
+            'name'      => 'System Admin',
+            'email'     => 'admin@sanfrancisco-agusansur.com',
+            'password'  => Hash::make('admin123'),
+            'phone'     => '09120000000',
+            'role'      => 'admin',
             'is_active' => true,
         ]);
 
-        // Create drivers
+        // Drivers from San Francisco, Agusan del Sur
         $drivers = [
-            'Juan Carlos Dela Cruz',
-            'Maria Santos Reyes',
-            'Jose Miguel Rodriguez',
-            'Ana Lucia Gonzales',
-            'Roberto Mendoza',
-            'Carmen Flores',
-            'Pedro Antonio Silva',
-            'Rosa Martinez',
-            'Luis Fernando Torres',
-            'Elena Vasquez',
+            'Juanito Magbanua',
+            'Marites Bualan',
+            'Ronald Pabillaran',
+            'Gemma Abao',
+            'Alvin Lumantas',
+            'Jessa Lagrimas',
+            'Efren Abadiano',
+            'Mylene Mansueto',
+            'Ruel Sabal',
+            'Cherry Mae Balasbas',
         ];
 
         foreach ($drivers as $name) {
             User::create([
-                'name' => $name,
-                'email' => strtolower(str_replace(' ', '.', $name)) . '@example.com',
-                'password' => Hash::make('password123'),
-                'phone' => '09' . rand(100000000, 999999999),
-                'role' => 'user',
+                'name'      => $name,
+                'email'     => Str::slug($name, '.') . '@driver.agusansur.com',
+                'password'  => Hash::make('driver123'),
+                'phone'     => '09' . rand(100000000, 999999999),
+                'role'      => 'user',
                 'is_active' => true,
             ]);
         }
 
-        // Create mechanics
+        // Mechanics from San Francisco, Agusan del Sur
         $mechanics = [
-            'Mario Bautista Santos',
-            'Ricardo Villanueva',
-            'Fernando Castro',
-            'Antonio Aguilar',
-            'Ramon Gutierrez',
-            'Leonardo Navarro',
-            'Benjamin Ortega',
-            'Eduardo Herrera',
+            'Mario Bagtikan',
+            'Ramon Casiple',
+            'Eddie Balasabas',
+            'Jomar Salimbagat',
+            'Antonio Saliot',
+            'Lemuel Faburada',
+            'Edwin Relampagos',
+            'Bobby Casuncad',
         ];
 
         foreach ($mechanics as $name) {
             User::create([
-                'name' => $name,
-                'email' => strtolower(str_replace(' ', '.', $name)) . '@mechanic.com',
-                'password' => Hash::make('password123'),
-                'phone' => '09' . rand(100000000, 999999999),
-                'role' => 'mechanic',
+                'name'      => $name,
+                'email'     => Str::slug($name, '.') . '@mechanic.agusansur.com',
+                'password'  => Hash::make('mechanic123'),
+                'phone'     => '09' . rand(100000000, 999999999),
+                'role'      => 'mechanic',
                 'is_active' => rand(0, 10) > 1,
             ]);
         }

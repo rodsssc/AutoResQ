@@ -11,12 +11,17 @@ class VehicleIssue extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'description',
+        'name',
+        'vehicle_type_id',
     ];
 
     public function serviceRequests()
     {
         return $this->hasMany(ServiceRequest::class, 'vehicle_issue_id ');
+    }
+
+    public function vehicle()
+    {
+        return $this->belongsTo(Vehicles::class, 'vehicle_type_id');
     }
 }

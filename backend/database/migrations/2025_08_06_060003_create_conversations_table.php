@@ -6,21 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::create('request_descriptions', function (Blueprint $table) {
+        Schema::create('conversations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('request_id')->onDelete('cascade');
-            $table->text('description')->nullable();
-            $table->json('issue_images')->nullable();
-            $table->json('video_url')->nullable();
-            $table->json('audio_notes')->nullable();
+            $table->foreignId('user_id')->onDelete('cascade');
+            $table->foreignId('mechanic_id')->onDelete('cascade');
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('request_descriptions');
+        Schema::dropIfExists('conversations');
     }
 };

@@ -20,14 +20,14 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
         'password',
-        'phone',
-        'imageUrl',
         'role',
+        'phone',
         'is_active',
-        
-        
+        'location_id',
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -68,4 +68,29 @@ class User extends Authenticatable
     {
         return $this->hasMany(Rating::class, 'driver_id');
     }
+
+        public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isMechanic(): bool
+    {
+        return $this->role === 'mechanic';
+    }
+
+    public function isUser(): bool
+    {
+        return $this->role === 'user';
+    }
+
+    public function verification()
+{
+    return $this->hasOne(Verification::class, 'user_id');
+}
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_id');
+    }
+
 }

@@ -11,14 +11,21 @@ class MechanicInfoSeeder extends Seeder
     public function run(): void
     {
         $mechanics = User::where('role', 'mechanic')->get();
-        $statuses = ['active', 'inactive'];
+
+        $specializations = [
+            'Motorcycle',
+            'Car',
+            'Both'
+        ];
+
+        $statuses = ['Available', 'Busy', 'Offline'];
 
         foreach ($mechanics as $mechanic) {
             MechanicInfo::create([
-                'mechanic_id' => $mechanic->id,
-                'license_number' => 'LIC-' . strtoupper(substr(md5($mechanic->id), 0, 8)),
-                'rating_average' => round(rand(300, 500) / 100, 2),
-                'status' => $statuses[array_rand($statuses)],
+                'mechanic_id'    => $mechanic->id,
+                'specialization' => $specializations[array_rand($specializations)],
+                'rating_average' => round(rand(350, 500) / 100, 2), // 3.50 to 5.00
+                'status'         => $statuses[array_rand($statuses)],
             ]);
         }
     }

@@ -13,10 +13,12 @@ return new class extends Migration
             
             $table->foreignId('mechanic_id')->nullable()->onDelete('cascade');
             $table->foreignId('vehicle_issue_id')->onDelete('cascade');
-            $table->foreignId('location_id')->onDelete('cascade');
-            
+           
+            $table->text('description')->nullable();
+            $table->json('issue_images')->nullable();
             $table->enum('status', ['pending', 'accepted', 'in_progress', 'completed', 'cancelled'])
                   ->default('pending');
+        
             $table->timestamps();
         });
     }

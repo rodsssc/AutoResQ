@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('mechanic_infos', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('mechanic_id')->onDelete('cascade');
-            $table->string('license_number')->unique();
-            $table->decimal('rating_average', 3, 2)->default(0.00);
-            $table->enum('status', ['active', 'inactive'])->default('active');
-                
-            $table->timestamps();
-        });
+        $table->id();
+        $table->foreignId('mechanic_id')->constrained('users')->onDelete('cascade');
+        $table->string('specialization')->nullable(); // e.g., motorcycle, car, both
+        $table->decimal('rating_average', 3, 2)->default(0.00);
+        $table->enum('status', ['Available', 'Busy','Offline'])->default('Available');
+      
+        $table->timestamps();
+    });
     }
 
     /**
